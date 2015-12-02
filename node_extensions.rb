@@ -14,3 +14,34 @@ LessThan  = Struct.new :left, :right
 
 Assign    = Struct.new :name, :expression
 Sequence  = Struct.new :first, :second
+
+
+class Number
+  def evaluate(environment)
+    value
+  end
+end
+
+class Boolean
+  def evaluate(environment)
+    value
+  end
+end
+
+class Variable
+  def evaluate(environment)
+    environment[name]
+  end
+end
+
+class Add
+  def evaluate(environment)
+    left.evaluate(environment) + right.evaluate(environment)
+  end
+end
+
+class Multiply
+  def evaluate(environment)
+    left.evaluate(environment) * right.evaluate(environment)
+  end
+end

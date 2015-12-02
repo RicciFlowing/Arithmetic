@@ -1,27 +1,46 @@
 grammar Arithmetic
 
+rule statement
+  additive/multitive/terminal
+end
+
 rule additive
-  multitive ('+' multitive)*
+  left:(multitive/terminal) '+' right:(additive/ multitive/terminal)
+  {
+    def to_ast
+      Add.new(left.to_ast, right.to_ast)
+    end
+  }
 end
 
 rule multitive
-  term ('*' term)*
+  left:terminal '*' right:(multitive/terminal)
+  {
+    def to_ast
+      Multiply.new(left.to_ast, right.to_ast)
+    end
+  }
 end
 
-rule term
-  number / boolean / variable
+rule terminal
+  number  / variable
 end
 
 rule number
-  [0-9]+
+   '-'? [0-9]+ {
+     def to_ast
+       Number.new(text_value.to_i)
+     end
+   }
 end
 
-rule boolean
-  ('true' / 'false') ![a-z]
-end
 
 rule variable
-  [a-z]+
+  [a-z]+ {
+    def to_ast
+      Variable.new(text_value.to_sym)
+    end
+  }
 end
 
 end
